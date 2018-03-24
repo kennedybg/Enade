@@ -1,0 +1,12 @@
+<br/>
+<div class="alert alert-warning" role="alert">
+  <h3>
+    <%= "Cadastrar curso" %>
+  </h3>
+  <%= "#{session[:universidade_nome]} - #{session[:universidade_uf]}" %>
+</div>
+
+
+<%= render 'form' %>
+
+<%= link_to "Voltar", cursos_path, class:"btn btn-warning"%>

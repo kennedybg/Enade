@@ -1,0 +1,112 @@
+<% if flash[:notice] %>
+  <br/>
+  <div class="alert alert-success" role="alert">
+    <%= flash[:notice]%>
+  </div>
+<%end%>
+<br/>
+<div class="alert alert-warning" role="alert">
+  <h3>
+    IES Cadastradas
+  </h3>
+</div>
+
+<div class="row">
+
+<div class="col-lg-2 col-xs-6">
+  <% if user_signed_in? %>
+  <p><%= link_to 'Cadastrar IES', new_universidade_path, class: "btn btn-primary"  %></p>
+  <%end%>
+  <br/>
+  <br/>
+</div>
+
+<div class="col-lg-3 col-xs-6">
+  <% if user_signed_in? %>
+  <p><%= link_to 'Download das IES (CSV)', export_universidades_path(format: "csv"), class: "btn btn-primary"  %></p>
+  <%end%>
+  <br/>
+  <br/>
+</div>
+
+
+<div class="col-lg-6 col-xs-6">
+  <% if user_signed_in? %>
+      <%= form_tag import_universidades_path, multipart:true do %>
+        <div class="form-inline">
+          <%= file_field_tag :file, class:"form-control" %>
+          <%= submit_tag "Importar IES via CSV", class:"btn btn-primary" %>
+        </div>
+      <%end%>
+  <%end%>
+  <br/>
+  <br/>
+</div>
+
+
+</div>
+
+<div class="row">
+
+  <div class="col-lg-3 col-xs-6">
+  <div class="small-box bg-green">
+      <div class="inner">
+        <h3><%= @iesMaiorNota %><sup style="font-size: 20px"> de 5</sup></h3>
+        <p>IES com maior nota</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3 col-xs-6">
+  <div class="small-box bg-red">
+      <div class="inner">
+        <h3><%= @iesMenorNota %><sup style="font-size: 20px"> de 5</sup></h3>
+        <p>IES com menor nota</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= search_form_for @q do |f| %>
+<div class="form-inline">
+    <div class="form-group">
+      <%= f.label :nome_cont, "Pesquisar por nome:" %>
+      <%= f.search_field :nome_cont, class: "form-control"%>
+    </div>
+    <div class="form-group">
+      <%= f.label :nota_geral_cont, "Pesquisar por nota geral:" %>
+      <%= f.search_field :nota_geral_cont, class: "form-control"%>
+    </div>
+    <%= f.submit "Filtrar", class:"btn btn-primary"%>
+</div>
+
+<%end%>
+<table class="table table-bordered table-striped table-hover">
+  <thead>
+    <tr>
+
+      <th><%= sort_link(@q, :nome, 'Nome IES', default_order: :asc) %></th>
+      <th><%= sort_link(@q,:uf, 'UF')%></th>
+      <th><%= sort_link(@q, :nota_geral, 'Nota Geral', default_order: :desc) %></th>
+      <th>Acessar</th>
+      <% if user_signed_in? %>
+      <th>Gerenciar</th>
+      <%end%>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @universidades.each do |universidade| %>
+      <tr>
+        <td><%= universidade.nome%></td>
+        <td><%= universidade.uf %></td>
+        <td><%= universidade.nota_geral %></td>
+        <td><%= link_to "Detalhes", universidade, class:"btn btn-info"%></td>
+        <% if user_signed_in? %>
+        <td><%= link_to "Alterar IES", edit_universidade_path(universidade), class:"btn btn-warning"%></td>
+        <%end%>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Enade</title>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+</head>
+<body class="skin-blue">
+    <header class="main-header">
+      <%= link_to root_url do%>
+          <span class="logo">
+            <span class="logo-mini">Plataforma Enade</span>
+            <span class="logo-lg">Plataforma Enade</span>
+          </span>
+      <%end %>
+      <nav class="navbar navbar-static-top">
+        <div class="navbar-form navbar-right">
+          <% if user_signed_in? %>
+              <%= label_tag current_user.email%>
+              <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "btn btn-warning", data: {confirm: "Tem certeza?"} %>
+          <% end %>
+      </nav>
+    </header>
+    <div class="container">
+        <%= yield %>
+    </div>
+    <br/>
+    <br/>
+    <br/>
+</body>
+</html>

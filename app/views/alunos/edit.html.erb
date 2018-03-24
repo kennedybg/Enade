@@ -1,0 +1,22 @@
+<br/>
+<div class="alert alert-warning" role="alert">
+  <h3>
+    <%= "Alterar dados do aluno: #{@aluno.nome}"%>
+  </h3>
+  <%= "#{session[:curso_nome]} - "%>
+  <%= "#{session[:universidade_nome]} - #{session[:universidade_uf]}"%>
+</div>
+
+<div class="row">
+<div class="col-lg-6 col-xs-6">
+  <% if user_signed_in? %>
+    <%= link_to 'Remover aluno', @aluno, method: :delete, class: "btn btn-danger", data: { confirm: 'Você tem certeza?' } %>
+  <%end%>
+  <br/>
+  <br/>
+</div>
+</div>
+
+<%= render 'form' %>
+
+<%= link_to "Voltar", alunos_path, class:"btn btn-warning"%>

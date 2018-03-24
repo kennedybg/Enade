@@ -1,0 +1,99 @@
+<% if flash[:notice] %>
+  <br/>
+  <div class="alert alert-success" role="alert">
+    <%= flash[:notice]%>
+  </div>
+<%end%>
+<br/>
+<div class="alert alert-warning" role="alert">
+  <h3>
+    <%= "#{session[:universidade_nome]} - #{session[:universidade_uf]} -  #{session[:curso_nome]}" %>
+  </h3>
+</div>
+
+<div class="row">
+<div class="col-lg-6 col-xs-6">
+  <% if user_signed_in? %>
+  <%= link_to 'Cadastrar aluno', new_aluno_path, class: "btn btn-primary"  %>
+  <%= link_to 'Download dos alunos (CSV)', export_alunos_path(format: "csv"), class: "btn btn-primary"  %>
+  <%end%>
+</div>
+<div class="col-lg-6 col-xs-6">
+  <% if user_signed_in? %>
+      <%= form_tag import_alunos_path, multipart:true do %>
+        <div class="form-inline">
+          <%= file_field_tag :file, class:"form-control" %>
+          <%= submit_tag "Importar alunos via CSV", class:"btn btn-primary" %>
+        </div>
+      <%end%>
+  <%end%>
+  <br/>
+  <br/>
+</div>
+
+</div>
+<div class="row">
+  <div class="col-lg-3 col-xs-6">
+  <div class="small-box bg-green">
+      <div class="inner">
+        <h3><%= "#{session[:curso_nota]}" %><sup style="font-size: 20px"> de 5</sup></h3>
+        <p>Nota do curso</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3 col-xs-6">
+  <div class="small-box bg-blue">
+      <div class="inner">
+        <h3><%= @alunoMaiorNota %><sup style="font-size: 20px"> de 5</sup></h3>
+        <p>aluno com maior nota</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3 col-xs-6">
+  <div class="small-box bg-red">
+      <div class="inner">
+        <h3><%= @alunoMenorNota %><sup style="font-size: 20px"> de 5</sup></h3>
+        <p>aluno com menor nota</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3 col-xs-6">
+  <div class="small-box bg-yellow">
+      <div class="inner">
+        <h3><%= @mediaCurso %><sup style="font-size: 20px"> de 5</sup></h3>
+        <p>Média dos alunos</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th><%= sort_link(@q_alunos, :nome, 'Nome do aluno') %></th>
+      <th><%= sort_link(@q_alunos, :email, 'Email') %></th>
+      <th><%= sort_link(@q_alunos, :nota_enade, 'Nota Enade') %></th>
+      <% if user_signed_in? %>
+      <th>Gerenciar</th>
+      <%end%>
+    </tr>
+  </thead>
+  <tbody>
+    <% @alunos.each do |aluno| %>
+      <tr>
+        <td><%= aluno.nome%></td>
+        <td><%= aluno.email %></td>
+        <td><%= aluno.nota_enade %></td>
+        <% if user_signed_in? %>
+
+        <td><%= link_to "Alterar aluno", edit_aluno_path(aluno), class:"btn btn-warning"%></td>
+        <%end%>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br/>
+<br/>
+<%= link_to 'Voltar', cursos_path, class: "btn btn-primary"  %>

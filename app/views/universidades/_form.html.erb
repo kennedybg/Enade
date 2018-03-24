@@ -1,0 +1,29 @@
+<%= form_for(@universidade) do |f| %>
+  <% if @universidade.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@universidade.errors.count, "error") %> prohibited this universidade from being saved:</h2>
+
+      <ul>
+      <% @universidade.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :nome %>
+    <%= f.text_field :nome, class: "form-control"  %>
+  </div>
+  <div class="form-group">
+    <%= f.label :uf,'UF' %>
+    <%= f.select :uf, ['AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO'] ,{}, class: "form-control"%>
+  </div>
+  <div class="form-group">
+    <%= f.label :nota_geral %>
+    <%= f.text_field :nota_geral, class: "form-control"  %>
+  </div>
+  <div class="form-group">
+    <%= f.submit "Confirmar", class: "btn btn-primary" %>
+  </div>
+<% end %>

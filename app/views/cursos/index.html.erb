@@ -1,0 +1,110 @@
+<% if flash[:notice] %>
+  <br/>
+  <div class="alert alert-success" role="alert">
+    <%= flash[:notice]%>
+  </div>
+<%end%>
+<br/>
+<div class="alert alert-warning" role="alert">
+  <h3>
+    <%= "#{session[:universidade_nome]} - #{session[:universidade_uf]}" %>
+  </h3>
+</div>
+
+<div class="row">
+<div class="col-lg-6 col-xs-6">
+  <% if user_signed_in? %>
+  <%= link_to "Alterar IES", edit_universidade_path(session[:universidade_id]), class:"btn btn-primary"%>
+  <%= link_to 'Cadastrar curso', new_curso_path, class: "btn btn-primary"  %>
+  <%= link_to 'Download dos cursos (CSV)', export_cursos_path(format: "csv"), class: "btn btn-primary"  %>
+  <%end%>
+</div>
+<div class="col-lg-6 col-xs-6">
+  <% if user_signed_in? %>
+      <%= form_tag import_cursos_path, multipart:true do %>
+        <div class="form-inline">
+          <%= file_field_tag :file, class:"form-control" %>
+          <%= submit_tag "Importar cursos via CSV", class:"btn btn-primary" %>
+        </div>
+      <%end%>
+  <%end%>
+  <br/>
+  <br/>
+</div>
+
+</div>
+<div class="row">
+  <div class="col-lg-3 col-xs-6">
+  <div class="small-box bg-green">
+      <div class="inner">
+        <h3><%= "#{session[:universidade_nota_geral]}" %><sup style="font-size: 20px"> de 5</sup></h3>
+        <p>Nota Geral</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3 col-xs-6">
+  <div class="small-box bg-blue">
+      <div class="inner">
+        <h3><%= @cursoMaiorNota %><sup style="font-size: 20px"> de 5</sup></h3>
+        <p>Curso com maior nota</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3 col-xs-6">
+  <div class="small-box bg-red">
+      <div class="inner">
+        <h3><%= @cursoMenorNota %><sup style="font-size: 20px"> de 5</sup></h3>
+        <p>Curso com menor nota</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= search_form_for @q_cursos do |f| %>
+<div class="form-inline">
+  <div class="form-group">
+    <%= f.label :nome_cont, "Nome do curso:" %>
+    <%= f.search_field :nome_cont, class: "form-control"%>
+  </div>
+  <div class="form-group">
+    <%= f.label :nota_cont, "Nota:" %>
+    <%= f.search_field :nota_cont, class: "form-control"%>
+  </div>
+  <div class="form-group">
+    <%= f.label :media_alunos_cont, "Média dos alunos:" %>
+    <%= f.search_field :media_alunos_cont, class: "form-control"%>
+  </div>
+  <%= f.submit "Filtrar", class:"btn btn-primary"%>
+</div>
+<%end%>
+<div class="row">
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th><%= sort_link(@q_cursos, :nome, 'Nome do curso') %></th>
+      <th><%= sort_link(@q_cursos, :nota, 'Nota') %></th>
+      <th><%= sort_link(@q_cursos, :media_alunos, 'Média dos alunos') %></th>
+      <% if user_signed_in? %>
+      <th>Detalhes</th>
+      <th>Gerenciar</th>
+      <%end%>
+    </tr>
+  </thead>
+  <tbody>
+    <% @cursos.each do |curso| %>
+      <tr>
+        <td><%= curso.nome%></td>
+        <td><%= curso.nota %></td>
+        <td><%= curso.media_alunos%></td>
+        <% if user_signed_in? %>
+        <td><%= link_to "Detalhes", curso, class:"btn btn-info"%></td>
+        <td><%= link_to "Alterar curso", edit_curso_path(curso), class:"btn btn-warning"%></td>
+        <%end%>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br/>
+<br/>
+<%= link_to 'Voltar', universidades_path, class: "btn btn-primary"  %>

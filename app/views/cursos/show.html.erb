@@ -1,0 +1,51 @@
+<p id="notice"><%= notice %></p>
+
+<%= search_form_for @q_cursos do |f| %>
+<div class="form-inline">
+  <div class="form-group">
+    <%= f.label :nome_cont, "Pesquisar por nome:" %>
+    <%= f.search_field :nome_cont, class: "form-control"%>
+  </div>
+  <div class="form-group">
+    <%= f.label :nota_geral_cont, "Pesquisar por nota:" %>
+    <%= f.search_field :nota_cont, class: "form-control"%>
+  </div>
+  <%= f.submit "Filtrar", class:"btn btn-warning"%>
+</div>
+<%end%>
+<h3>
+  <%= "#{session[:universidade_nome]} - #{session[:universidade_uf]}" %>
+</h3>
+<div class="row">
+  <div class="col-lg-3 col-xs-6">
+  <div class="small-box bg-green">
+      <div class="inner">
+        <h3><%= "#{session[:universidade_nota_geral]}" %><sup style="font-size: 20px"> de 5</sup></h3>
+        <p>Nota Geral</p>
+      </div>
+    </div>
+  </div>
+<br/>
+<br/>
+<br/>
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th><%= sort_link(@q_cursos, :nome, 'Nome do curso') %></th>
+      <th><%= sort_link(@q_cursos, :nota, 'Nota') %></th>
+      <th><%= sort_link(@q_cursos, :media_alunos, 'Média dos alunos') %></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @cursos.each do |curso| %>
+      <tr>
+        <td><%= curso.nome%></td>
+        <td><%= curso.nota %></td>
+        <td><%= curso.media_alunos %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<br/>
+<br/>
+<%= link_to 'Voltar', universidades_path, class: "btn btn-primary"  %>

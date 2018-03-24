@@ -1,0 +1,22 @@
+<br/>
+<div class="alert alert-warning" role="alert">
+  <h3>
+    <%= "Alterar dados do curso: #{session[:curso_nome]}" %>
+  </h3>
+  <%= "#{session[:universidade_nome]} - #{session[:universidade_uf]}"%>
+</div>
+
+<div class="row">
+<div class="col-lg-6 col-xs-6">
+  <% if user_signed_in? %>
+    <%= link_to 'Remover curso', @curso, method: :delete, class: "btn btn-danger", data: { confirm: 'Você tem certeza?' } %>
+    <%= link_to 'Cadastrar aluno', new_aluno_path, class: "btn btn-primary"  %>
+  <%end%>
+  <br/>
+  <br/>
+</div>
+</div>
+
+<%= render 'form' %>
+
+<%= link_to "Voltar", cursos_path, class:"btn btn-warning"%>
